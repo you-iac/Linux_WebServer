@@ -7,5 +7,11 @@ add_executable(http
 
 #        listen.cpp
         sockread.cpp
-#        sockwrite.cpp
+        8_3.cpp
+        9_4.cpp
+        9_3.cpp
+        9_5.cpp
+        "9_6 ssh_client.cpp"
+        "9_7 ssh_server.cpp"
+        #        sockwrite.cpp
 )
