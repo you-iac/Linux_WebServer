@@ -225,7 +225,7 @@ void processpool< T >::run_child()
                     users[connfd].init( m_epollfd, connfd, client_address );
                 }
             }
-            /*信号管道有数据*/
+            /*io事件为管道有数据到达，说明有信号来临*/
             else if( ( sockfd == sig_pipefd[0] ) && ( events[i].events & EPOLLIN ) )
             {
                 int sig;
@@ -241,7 +241,7 @@ void processpool< T >::run_child()
                     {
                         switch( signals[i] )
                         {
-                            case SIGCHLD:
+                            case SIGCHLD:/*子进程退出*/
                             {
                                 pid_t pid;
                                 int stat;
@@ -251,13 +251,13 @@ void processpool< T >::run_child()
                                 }
                                 break;
                             }
-                            case SIGTERM:
-                            case SIGINT:
+                            case SIGTERM:/*终止请求*/
+                            case SIGINT:/*Ctrl+C*/
                             {
                                 m_stop = true;
                                 break;
                             }
-                            default:
+                            default:/*其他信号忽略*/
                             {
                                 break;
                             }
@@ -265,6 +265,7 @@ void processpool< T >::run_child()
                     }
                 }
             }
+            /*用户数据写入*/
             else if( events[i].events & EPOLLIN )
             {
                 users[sockfd].process();
@@ -308,6 +309,7 @@ void processpool< T >::run_parent()
         for ( int i = 0; i < number; i++ )
         {
             int sockfd = events[i].data.fd;
+            /*新连接到达*/
             if( sockfd == m_listenfd )
             {
                 int i =  sub_process_counter;
@@ -332,6 +334,7 @@ void processpool< T >::run_parent()
                 printf( "send request to child %d\n", i );
                 //sub_process_counter %= m_process_number;
             }
+            /*信号处理*/
             else if( ( sockfd == sig_pipefd[0] ) && ( events[i].events & EPOLLIN ) )
             {
                 int sig;
@@ -395,6 +398,7 @@ void processpool< T >::run_parent()
                     }
                 }
             }
+
             else
             {
                 continue;
