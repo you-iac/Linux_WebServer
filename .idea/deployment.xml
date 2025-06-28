@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" autoUpload="Always" serverName="远程开发" remoteFilesAllowedToDisappearOnAutoupload="false">
+  <component name="PublishConfigData" autoUpload="Always" serverName="远程开发" deleteMissingItems="true">
     <serverData>
       <paths name="远程主机 (3aa2cfb1-fe67-4ba1-b990-bd58d29afd5d)">
         <serverdata>
